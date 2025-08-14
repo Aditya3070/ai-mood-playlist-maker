@@ -12,4 +12,4 @@ Type how you feel — get a private Spotify playlist for your vibe.
 2) `cd server && cp .env.example .env` → fill your Spotify Client ID/Secret.
 3) In `/server`: `npm i && npm run dev`
 4) In `/client`: `cp .env.example .env && npm i && npm run dev`
-5) Open http://localhost:5173 → click Generate → login with Spotify → enjoy 🎶
+5) Open https://github.com/Aditya3070/ai-mood-playlist-maker → click Generate → login with Spotify → enjoy 🎶
