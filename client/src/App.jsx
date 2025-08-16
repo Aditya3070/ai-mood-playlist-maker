@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import "./styles.css";
-import MoodInput from "./components/MoodInput.jsx";
-import PlaylistCard from "./components/PlaylistCard.jsx";
-import Loader from "./components/Loader.jsx";
-import { getMe, generatePlaylist, loginUrl } from "./api.js";
+import { getMe, generatePlaylist, loginUrl } from "./api";
+import PlaylistCard from "./PlaylistCard";
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [mood, setMood] = useState("");
   const [loading, setLoading] = useState(false);
   const [playlist, setPlaylist] = useState(null);
-  const [tracks, setTracks] = useState([]); // NEW
+  const [tracks, setTracks] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -18,7 +16,7 @@ export default function App() {
     })();
   }, []);
 
-  const handleGenerate = async (mood) => {
+  async function onGenerate() {
     if (!mood.trim()) return;
     if (!user) {
       window.location.href = loginUrl();
@@ -27,32 +25,34 @@ export default function App() {
     setLoading(true);
     const res = await generatePlaylist(mood);
     setPlaylist(res.playlist);
-    setTracks(Array.isArray(res.tracks) ? res.tracks.slice(0, 20) : []); // NEW
+    setTracks(res.tracks || []);
     setLoading(false);
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-anim text-white">
-      <div className="max-w-2xl mx-auto px-6 py-12">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            Moodify <span className="text-sm px-2 py-1 rounded bg-white/10">AI Mood DJ</span>
-          </h1>
-          <p className="opacity-80 mt-2">Type how you feel. Get a Spotify playlist for your vibe.</p>
-          <div className="mt-3 text-sm opacity-80">
-            {user ? `Logged in as ${user.display_name}` : "Not logged in"}
-          </div>
-        </header>
+    <div className="container">
+      <header>
+        <h1>Moodify <span className="badge">AI Mood DJ</span></h1>
+        <p className="small">Type how you feel. Get a Spotify playlist for your vibe.</p>
+        <div className="small">{user ? `Logged in as ${user.display_name}` : "Not logged in"}</div>
+      </header>
 
-        <MoodInput onSubmit={handleGenerate} />
-
-        {loading && <Loader />}
-        {playlist && <PlaylistCard playlist={playlist} tracks={tracks} />} {/* pass tracks */}
-
-<footer className="mt-10 text-xs opacity-60">
-  Showing live track list with artist and album details
-</footer>
+      <div className="card" style={{marginTop: 16}}>
+        <input
+          className="input"
+          value={mood}
+          onChange={e => setMood(e.target.value)}
+          placeholder="happy, nostalgic 90s, rainy chill…"
+        />
+        <button className="button" onClick={onGenerate} disabled={loading}>
+          {loading ? "Generating…" : "Generate 🎶"}
+        </button>
+        <div className="small" style={{marginTop: 8}}>Tip: try “nostalgic 90s”, “rainy chill”, “energetic gym”</div>
       </div>
+
+      {playlist && <PlaylistCard playlist={playlist} tracks={tracks} />}
+
+      <footer className="footer">Built with Spotify API • No data stored • Private playlists</footer>
     </div>
   );
 }

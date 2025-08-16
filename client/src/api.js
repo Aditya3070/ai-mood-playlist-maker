@@ -1,20 +1,22 @@
-const BASE = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
+// Simple client API wrapper
+const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
+
+export const loginUrl = () => `${API_BASE}/login`;
 
 export async function getMe() {
-  const res = await fetch(`${BASE}/api/me`);
-  if (!res.ok) return null;
-  return res.json();
+  try {
+    const r = await fetch(`${API_BASE}/me`, { credentials: "include" });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch {
+    return null;
+  }
 }
 
 export async function generatePlaylist(mood) {
-  const res = await fetch(`${BASE}/api/generate`, {
+  const r = await fetch(`${API_BASE}/api/generate?mood=${encodeURIComponent(mood)}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mood })
+    credentials: "include"
   });
-  return res.json();
-}
-
-export function loginUrl() {
-  return `${BASE}/login`;
+  return await r.json();
 }

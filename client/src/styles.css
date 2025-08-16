@@ -1,26 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Layout base */
-html, body, #root { height: 100%; }
-
-/* Animated gradient background */
-.bg-anim {
-  background: linear-gradient(120deg, #1db954, #121212, #222);
-  background-size: 300% 300%;
-  animation: gradient 8s ease infinite;
+:root { color-scheme: dark; }
+body {
+  margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(1200px 800px at 10% 10%, #222 0%, #0b0b0b 60%, #000 100%);
+  color: #fff;
 }
-@keyframes gradient {
-  0% { background-position: 0% 50% }
-  50% { background-position: 100% 50% }
-  100% { background-position: 0% 50% }
-}
-
-/* Frosted glass card */
-.card {
-  @apply rounded-xl p-4 shadow hover:shadow-lg transition;
-  background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(8px);
-}
-input::placeholder { opacity: .6; }
+.container { max-width: 720px; margin: 0 auto; padding: 32px 20px; }
+.card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 16px; }
+.input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.2); background: rgba(0,0,0,.4); color: #fff; }
+.button { margin-top: 10px; padding: 10px 14px; border-radius: 10px; background: #1DB954; color: #0b0b0b; border: none; font-weight: 700; cursor: pointer; }
+.button:disabled { opacity: .5; cursor: not-allowed; }
+.footer { margin-top: 24px; opacity: .6; font-size: 12px; }
+.track { padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,.05); }
+.track + .track { margin-top: 8px; }
+.small { font-size: 12px; opacity: .75; }
+h1 { display:flex; align-items:center; gap:8px; font-size: 28px; margin: 0 0 8px; }
+.badge { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: rgba(255,255,255,.1); }
